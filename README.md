@@ -87,6 +87,7 @@ Sigmar (RL): push north
 - Realm Leader highlighting can also use your current friendly target or mouseover target to identify the player.
 - Some automated recruitment messages are ignored so Realm Leader alerts stay focused on actual calls.
 - The game alert area keeps a limited number of recent lines. If repeated test messages stop appearing, wait a few seconds and try again.
+- Maintained public source: https://github.com/jmaartenson/MegaphonePlusPlus.
 - Original GitHub source: https://github.com/timneill/megaphoneplusplus/. That repository's latest commit is from 2020-07-07, so this version is maintained separately.
 
 ## Changelog
