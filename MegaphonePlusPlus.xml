@@ -22,13 +22,13 @@
                             <AbsPoint x="0" y="-100"/>
                         </Anchor>
                     </Anchors>
-                </DynamicImage>  
+                </DynamicImage>
 			</Windows>
 		</Window>
 
         <Window name="MegaphoneMain" layer="popup" movable="true" savesettings="false">
             <Size>
-                <AbsPoint x="720" y="320" />
+                <AbsPoint x="720" y="520" />
             </Size>
 
             <Anchors>
@@ -42,7 +42,7 @@
 				<Window name="$parentTitleBar" inherits="EA_TitleBar_Default"/>
 				<Button name="$parentClose" inherits="EA_Button_DefaultWindowClose" >
 					<EventHandlers>
-						<EventHandler event="OnLButtonUp" function="Megaphone.HideWindow"/>
+						<EventHandler event="OnLButtonUp" function="Megaphone.CloseAndSave"/>
 					</EventHandlers>
 				</Button>
 
@@ -74,6 +74,25 @@
 					</EventHandlers>
 				</Button>
 
+				<Label name="$parentHighlightRealmLeaderLabel" inherits="EA_Label_DefaultText_Small" textalign="left">
+					<Size><AbsPoint x="240" y="40" /></Size>
+					<Anchors>
+						<Anchor point="topleft" relativePoint="topleft" relativeTo="$parentHighlightLeaderLabel">
+							<AbsPoint x="350" y="0"/>
+						</Anchor>
+					</Anchors>
+				</Label>
+				<Button name="$parentHighlightRealmLeaderCheckbox" inherits="EA_Button_DefaultCheckBox">
+					<Anchors>
+						<Anchor point="topright" relativePoint="topleft" relativeTo="$parentHighlightRealmLeaderLabel">
+							<AbsPoint x="0" y="-2"/>
+						</Anchor>
+					</Anchors>
+					<EventHandlers>
+						<EventHandler event="OnLButtonUp" function="Megaphone.HighlightRealmLeaderToggle" />
+					</EventHandlers>
+				</Button>
+
 				<Label name="$parentShowLeaderLabel" inherits="EA_Label_DefaultText_Small" textalign="left">
 					<Size><AbsPoint x="240" y="40" /></Size>
 					<Anchors>
@@ -92,44 +111,121 @@
 						<EventHandler event="OnLButtonUp" function="Megaphone.ShowLeaderToggle" />
 					</EventHandlers>
 				</Button>
-				
-				<Label name="$parentSFXTitleLabel" inherits="EA_Label_DefaultText_Small">
-					<Size><AbsPoint x="240" y="40" /></Size>
-					<Anchors>
-						<Anchor point="topleft" relativePoint="topleft" relativeTo="$parentShowLeaderLabel">
-							<AbsPoint x="0" y="48" />
-						</Anchor>
-					</Anchors>
-				</Label>
-				<ComboBox name="$parentSFXComboBox" inherits="EA_ComboBox_DefaultResizableLarge">
-					<Anchors>
-						<Anchor point="topright" relativePoint="topleft" relativeTo="$parentSFXTitleLabel">
-							<AbsPoint x="0" y="-6" />
-						</Anchor>
-					</Anchors>
-					<EventHandlers>
-						<EventHandler event="OnSelChanged" function="Megaphone.SaveSettings" />
-					</EventHandlers>
-				</ComboBox>
 
-				<Label name="$parentFontTitleLabel" inherits="EA_Label_DefaultText_Small">
-					<Size><AbsPoint x="240" y="40" /></Size>
-					<Anchors>
-						<Anchor point="topleft" relativePoint="topleft" relativeTo="$parentSFXTitleLabel">
-							<AbsPoint x="0" y="48" />
-						</Anchor>
-					</Anchors>
-				</Label>
-				<ComboBox name="$parentFontComboBox" inherits="EA_ComboBox_DefaultResizableLarge">
-					<Anchors>
-						<Anchor point="topright" relativePoint="topleft" relativeTo="$parentFontTitleLabel">
-							<AbsPoint x="0" y="-6" />
-						</Anchor>
-					</Anchors>
-					<EventHandlers>
-						<EventHandler event="OnSelChanged" function="Megaphone.SaveSettings" />
-					</EventHandlers>
-				</ComboBox>
+                <!-- Realm Leader (session-only) -->
+                <Label name="$parentRealmLeaderLabel" inherits="EA_Label_DefaultText_Small" textalign="left">
+                    <Size><AbsPoint x="240" y="40" /></Size>
+                    <Anchors>
+                        <Anchor point="topleft" relativePoint="topleft" relativeTo="$parentShowLeaderLabel"> <AbsPoint x="0" y="48"/> </Anchor>
+                    </Anchors>
+                </Label>
+                <EditBox name="$parentRealmLeaderEditBox" inherits="EA_EditBox_DefaultFrame" maxchars="32">
+                    <Size><AbsPoint x="180" y="30" /></Size>
+                    <Anchors>
+                        <Anchor point="topright" relativePoint="topleft" relativeTo="$parentRealmLeaderLabel">
+                            <AbsPoint x="0" y="-2"/>
+                        </Anchor>
+                    </Anchors>
+                    <EventHandlers>
+                        <EventHandler event="OnEnterPressed" function="Megaphone.RealmLeaderEditCommit" />
+                        <EventHandler event="OnFocusLost" function="Megaphone.RealmLeaderEditCommit" />
+                    </EventHandlers>
+                </EditBox>
+
+                <!-- Context menu option to show 'Set as RL' item -->
+                <Label name="$parentContextMarkRLLabel" inherits="EA_Label_DefaultText_Small" textalign="left">
+                    <Size><AbsPoint x="240" y="40" /></Size>
+                    <Anchors>
+                        <Anchor point="topleft" relativePoint="topleft" relativeTo="$parentRealmLeaderLabel"> <AbsPoint x="0" y="48"/> </Anchor>
+                    </Anchors>
+                </Label>
+                <Button name="$parentContextMarkRLCheckbox" inherits="EA_Button_DefaultCheckBox">
+                    <Anchors>
+                        <Anchor point="topright" relativePoint="topleft" relativeTo="$parentContextMarkRLLabel">
+                            <AbsPoint x="0" y="-2"/>
+                        </Anchor>
+                    </Anchors>
+                    <EventHandlers>
+                        <EventHandler event="OnLButtonUp" function="Megaphone.ContextMarkRLToggle" />
+                    </EventHandlers>
+                </Button>
+
+                <Label name="$parentMaxLengthLabel" inherits="EA_Label_DefaultText_Small" textalign="left">
+                    <Size><AbsPoint x="240" y="40" /></Size>
+                    <Anchors>
+                        <Anchor point="topleft" relativePoint="topleft" relativeTo="$parentContextMarkRLLabel"> <AbsPoint x="0" y="48"/> </Anchor>
+                    </Anchors>
+                </Label>
+                <EditBox name="$parentMaxLengthEditBox" inherits="EA_EditBox_DefaultFrame" maxchars="4" numeric="true">
+                    <Size><AbsPoint x="80" y="30" /></Size>
+                    <Anchors>
+                        <Anchor point="topright" relativePoint="topleft" relativeTo="$parentMaxLengthLabel">
+                            <AbsPoint x="0" y="-2"/>
+                        </Anchor>
+                    </Anchors>
+                    <EventHandlers>
+                        <EventHandler event="OnEnterPressed" function="Megaphone.SaveSettings" />
+                        <EventHandler event="OnFocusLost" function="Megaphone.SaveSettings" />
+						<EventHandler event="OnTextChanged" function="Megaphone.SaveSettings" />
+                    </EventHandlers>
+                </EditBox>
+
+                <Label name="$parentSFXTitleLabel" inherits="EA_Label_DefaultText_Small">
+                    <Size><AbsPoint x="240" y="40" /></Size>
+                    <Anchors>
+                        <Anchor point="topleft" relativePoint="topleft" relativeTo="$parentMaxLengthLabel">
+                            <AbsPoint x="0" y="48" />
+                        </Anchor>
+                    </Anchors>
+                </Label>
+                <ComboBox name="$parentSFXComboBox" inherits="EA_ComboBox_DefaultResizableLarge">
+                    <Anchors>
+                        <Anchor point="topright" relativePoint="topleft" relativeTo="$parentSFXTitleLabel">
+                            <AbsPoint x="0" y="-6" />
+                        </Anchor>
+                    </Anchors>
+                    <EventHandlers>
+                        <EventHandler event="OnSelChanged" function="Megaphone.SaveSettings" />
+                    </EventHandlers>
+                </ComboBox>
+
+                <Label name="$parentRLSFXTitleLabel" inherits="EA_Label_DefaultText_Small">
+                    <Size><AbsPoint x="240" y="40" /></Size>
+                    <Anchors>
+                        <Anchor point="topleft" relativePoint="topleft" relativeTo="$parentSFXTitleLabel">
+                            <AbsPoint x="0" y="48" />
+                        </Anchor>
+                    </Anchors>
+                </Label>
+                <ComboBox name="$parentRLSFXComboBox" inherits="EA_ComboBox_DefaultResizableLarge">
+                    <Anchors>
+                        <Anchor point="topright" relativePoint="topleft" relativeTo="$parentRLSFXTitleLabel">
+                            <AbsPoint x="0" y="-6" />
+                        </Anchor>
+                    </Anchors>
+                    <EventHandlers>
+                        <EventHandler event="OnSelChanged" function="Megaphone.SaveSettings" />
+                    </EventHandlers>
+                </ComboBox>
+
+                <Label name="$parentFontTitleLabel" inherits="EA_Label_DefaultText_Small">
+                    <Size><AbsPoint x="240" y="40" /></Size>
+                    <Anchors>
+                        <Anchor point="topleft" relativePoint="topleft" relativeTo="$parentRLSFXTitleLabel">
+                            <AbsPoint x="0" y="48" />
+                        </Anchor>
+                    </Anchors>
+                </Label>
+                <ComboBox name="$parentFontComboBox" inherits="EA_ComboBox_DefaultResizableLarge">
+                    <Anchors>
+                        <Anchor point="topright" relativePoint="topleft" relativeTo="$parentFontTitleLabel">
+                            <AbsPoint x="0" y="-6" />
+                        </Anchor>
+                    </Anchors>
+                    <EventHandlers>
+                        <EventHandler event="OnSelChanged" function="Megaphone.SaveSettings" />
+                    </EventHandlers>
+                </ComboBox>
 
 				<Window name="$parentButtonBackground" inherits="EA_Window_DefaultButtonBottomFrame" layer="background" />
 
@@ -144,6 +240,17 @@
                     </EventHandlers>
                 </Button>
 
+                <Button name="$parentRLTestButton" inherits="EA_Button_DefaultResizeable"  font="font_chat_text" textalign="center">
+                    <Anchors>
+                        <Anchor point="bottomleft" relativePoint="bottomleft" >
+                            <AbsPoint x="150" y="-10" />
+                        </Anchor>
+                    </Anchors>
+                    <EventHandlers>
+                        <EventHandler event="OnLButtonUp" function="Megaphone.TestRLAlert"/>
+                    </EventHandlers>
+                </Button>
+
                 <Button name="$parentCloseButton" inherits="EA_Button_DefaultResizeable"  font="font_chat_text" textalign="center">
                     <Anchors>
                         <Anchor point="bottomright" relativePoint="bottomright" >
@@ -151,7 +258,7 @@
                         </Anchor>
                     </Anchors>
                     <EventHandlers>
-                        <EventHandler event="OnLButtonUp" function="Megaphone.HideWindow"/>
+                        <EventHandler event="OnLButtonUp" function="Megaphone.CloseAndSave"/>
                     </EventHandlers>
                 </Button>
             </Windows>

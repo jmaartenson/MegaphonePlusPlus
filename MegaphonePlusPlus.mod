@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ModuleFile xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
-	<UiMod name="MegaphonePlusPlus" version="1.0" date="26/05/2020" >
+<UiMod name="MegaphonePlusPlus" version="1.1.5" date="2026-05-15" >
 
 		<Author name="Tim Neill" email="kinghfb@gmail.com" />
 		<Author name="kinghfb" version= "1.0"/>
 		<Description text="Announces group leader's texts on screen. Never miss a command!" />
-		<VersionSettings gameVersion="1.4.1" windowsVersion="1.0" savedVariablesVersion="1.0" />
+		<VersionSettings gameVersion="1.4.8" windowsVersion="1.0" savedVariablesVersion="1.0" />
 
 		<Dependencies>
 			<Dependency name="EA_ChatWindow" />
@@ -13,7 +13,7 @@
 			<Dependency name="EASystem_Utils"/>
 			<Dependency name="EASystem_WindowUtils"/>
 		</Dependencies>
-		
+
 		<Files>
 			<File name="MegaphonePlusPlus.lua" />
 			<File name="MegaphonePlusPlus.xml" />
@@ -22,16 +22,18 @@
 		<SavedVariables>
 			<SavedVariable name="Megaphone.Settings" />
 		</SavedVariables>
-		
+
 		<OnInitialize>
 			<CallFunction name="Megaphone.Initialize" />
 		</OnInitialize>
-		
+
 		<OnShutdown>
 			<CallFunction name="Megaphone.OnShutdown" />
 		</OnShutdown>
 
-		<OnUpdate/>
+               <OnUpdate>
+                       <CallFunction name="Megaphone.OnFrameUpdate" />
+               </OnUpdate>
 
 		<WARInfo>
 			<Categories>
